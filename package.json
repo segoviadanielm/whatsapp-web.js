@@ -23,7 +23,11 @@
     "node"
   ],
   "author": "Pedro Lopez",
+  "contributors": [
+    "Daniel Segovia"
+  ],
   "license": "Apache-2.0",
+  
   "bugs": {
     "url": "https://github.com/pedroslopez/whatsapp-web.js/issues"
   },
