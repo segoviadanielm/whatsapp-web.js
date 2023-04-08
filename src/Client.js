@@ -1257,16 +1257,16 @@ class Client extends EventEmitter {
     
     /**
      * Get Catalog by userid
-     * @param {string} userid 
+     * @param {string} userId 
      * @returns {Promise<PersonalCatalog | ExternalCatalog>}
      */
 
-    async getCatalog(userid) {
-        const isMe = await this.pupPage.evaluate(userid => {
-            return window.Store.User.getMeUser()._serialized == userid;
-        }, userid);
+    async getCatalog(userId) {
+        const isMe = await this.pupPage.evaluate(userId => {
+            return window.Store.User.getMeUser()._serialized == userId;
+        }, userId);
        
-        return CatalogFactory.create(this, {userid, isMe});
+        return CatalogFactory.create(this, {userId, isMe});
     }
     
     /**

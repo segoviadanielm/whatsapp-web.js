@@ -2,6 +2,7 @@
 import { EventEmitter } from 'events'
 import { RequestInit } from 'node-fetch'
 import * as puppeteer from 'puppeteer'
+import ExternalCatalog from './src/structures/ExternalCatalog'
 
 declare namespace WAWebJS {
 
@@ -50,6 +51,9 @@ declare namespace WAWebJS {
 
         /** Get all blocked contacts by host account */
         getBlockedContacts(): Promise<Contact[]>
+
+        /** Get Catalog instance by userId */
+        getCatalog(userId: string): Promise<PersonalCatalog | ExternalCatalog>
 
         /** Get chat instance by ID */
         getChatById(chatId: string): Promise<Chat>
@@ -1432,6 +1436,71 @@ declare namespace WAWebJS {
         aggregateEmoji: string,
         hasReactionByMe: boolean,
         senders: Array<Reaction>
+    }
+
+    /** Represents an item of Whatsapp Business Catalog */
+    export interface CatalogItem {
+        /** CatalogItem ID */
+        id: string,
+        /** Price */
+        price: number,
+        /** CatalogItem Image */
+        imageCdnUrl: string,
+        /** CatalogItem Currency */
+        currency: string,
+        /** CatalogItem Name */
+        name: string,
+        /** CatalogItem Quantity */
+        quantity: number,
+        /** CatalogItem Description */
+        description: string,
+        /** CatalogItem Availiability */
+        availability: string,
+        /** CatalogItem RetailerId */
+        retailerId: string,
+        /** CatalogItem Review Status */
+        reviewStatus: string,
+        /** CatalogItems Additional Images */
+        additionalImageCdnUrl: Array<string>,
+        /** CatalogItem Url */
+        url: string,
+        /** CatalogItem IsHidden */
+        isHidden: boolean
+    }
+
+    /** Collection of products defined on Whatsapp Business Catalog */
+    export interface Collection {
+        /** ID that represents a Collection */
+        id: string,
+        /** Collection's name */
+        name: string,
+        /** Status of Collection */
+        reviewStatus: string,
+        /** Show status */
+        isHidden?: boolean,
+        /** Reason why cannot approve this collection */
+        rejectReason: string
+
+        getProducts(): Promise<Array<CatalogItem>>
+    }
+
+    /** Whatsapp Business Catalog */
+    export interface Catalog {
+        userId: string
+
+        getCollections(): Promise<Array<Collection>>
+    }
+
+    export interface PersonalCatalog extends Catalog {
+        isMe: boolean
+
+        getProducts(): Promise<Array<CatalogItem>>
+    }
+
+    export interface ExternalCatalog extends Catalog {
+        isMe: boolean
+
+        getProducts(): Promise<Array<CatalogItem>>
     }
 }
 

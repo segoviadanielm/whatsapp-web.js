@@ -1,6 +1,7 @@
 'use strict';
 
 const Base = require('./Base');
+const Collection = require('./Collection');
 
 /**
  * Represents Catalog on WhatsApp Business
@@ -14,8 +15,20 @@ class Catalog extends Base {
     }
     
     _patch(data) {
-        this.userid = data.userid;
+        this.userId = data.userId;
         return super._patch(data);
+    }
+
+    /**
+     * List all Collections on the Cataloo
+     * @returns {Promise<Array<Collection>>}
+     */
+    async getCollections() { 
+        const res = await this.client.pupPage.evaluate(async () => {
+            return await window.WWebJS.getCatalogCollections();
+        });
+        
+        return res.map(collection => new Collection(this.client, collection));
     }
 }
 
