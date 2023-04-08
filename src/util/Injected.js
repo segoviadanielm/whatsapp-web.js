@@ -627,27 +627,73 @@ exports.LoadUtils = () => {
         await window.Store.Socket.deprecatedCastStanza(stanza);
     };
     
+    
     window.WWebJS.getCatalogProductModel = product => {
         return product.serialize();
     };
+
+    window.WWebJS.discoverCatalog = async userid => { //first we need to know catalog, then get the items
+        return await window.Store.Catalog.findCarouselCatalog(userid)
+            .then(() => true)
+            .catch(() => false);
+    };
     
-    window.WWebJS.getCatalogProducts = async() => {
-        const catalog = await window.Store.Catalog.getModelsArray()[0].productCollection;
-        return catalog.map(product => window.WWebJS.getCatalogProductModel(product));
+    window.WWebJS.getCatalogProducts = async userid => { //read all catalogs
+        const catalogExist = await window.WWebJS.discoverCatalog(userid);
+
+        if(catalogExist) {
+            let itemsCount = 0, repeated = false;
+            let data = await window.Store.Catalog.findNextProductPage(userid);
+            
+            itemsCount = data.length;
+            
+            while(!repeated) {
+                const res = await window.Store.Catalog.findNextProductPage(userid);
+                if(res.length !== itemsCount)
+                {
+                    itemsCount = res.length;
+                }
+                else {
+                    data = res;
+                    repeated = true;
+                }
+
+            }
+
+            return data.map(product => window.WWebJS.getCatalogProductModel(product));
+
+        }
+        
+        return [];
+    };
+
+    window.WWebJS.getMeCatalog = async () => {
+        const user = window.Store.User.getMaybeMeUser();
+        try {
+            await window.WWebJS.getCatalogProducts(user._serialized);
+            return window.Store.Catalog.getModelsArray()[0]
+                .productCollection.getModelsArray()
+                .map(product => window.WWebJS.getCatalogProductModel(product));
+        }   
+        catch(err) { 
+            return [];
+        }
+
+
     };
     
     window.WWebJS.getCatalogCollectionsModel = collection => {
         return collection.serialize();
     };
     
-    window.WWebJS.getCatalogCollections = async() => {
+    window.WWebJS.getCatalogCollections = async() => { //TODO
         const catalog = await window.Store.Catalog.getModelsArray()[0];
         const collections = await catalog.collections.getCollectionModels();
         
         return collections.map(collection => window.WWebJS.getCatalogCollectionsModel(collection));
     };
     
-    window.WWebJS.getCollectionProducts = async (id) => {
+    window.WWebJS.getCollectionProducts = async (id) => { //TODO
         const catalog = await window.Store.Catalog.getModelsArray()[0];
         const products = await catalog.collections.get(id).productCollection;
     

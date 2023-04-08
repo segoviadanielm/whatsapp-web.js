@@ -11,7 +11,7 @@ class Collection extends Base {
     constructor(client, data) {
         super(client);
         
-        if(data) this._patch(data)
+        if(data) this._patch(data);
     }
     
     _patch(data) {
@@ -45,7 +45,7 @@ class Collection extends Base {
          */
         this.rejectReason = data.rejectReason;
         
-        return super._patch(data)
+        return super._patch(data);
     }
 
     /**

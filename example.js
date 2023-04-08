@@ -25,8 +25,10 @@ client.on('auth_failure', msg => {
     console.error('AUTHENTICATION FAILURE', msg);
 });
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log('READY');
+    const catalog = await client.getCatalog('5491158419149@c.us');
+    console.log(catalog, await catalog.getProducts(), catalog.isMe);
 });
 
 client.on('catalog_ready', async () => {
