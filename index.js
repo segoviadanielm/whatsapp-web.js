@@ -21,6 +21,11 @@ module.exports = {
     ProductMetadata: require('./src/structures/ProductMetadata'),
     List: require('./src/structures/List'),
     Buttons: require('./src/structures/Buttons'),
+    Catalog: require('./src/structures/Catalog'),
+    CatalogItem: require('./src/structures/CatalogItem'),
+    PersonalCatalog: require('./src/structures/PersonalCatalog'),
+    ExternalCatalog: require('./src/structures/ExternalCatalog'),
+    Collection: require('./src/structures/Collection'),
     
     // Auth Strategies
     NoAuth: require('./src/authStrategies/NoAuth'),

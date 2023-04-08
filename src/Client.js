@@ -14,8 +14,6 @@ const { ClientInfo, Message, MessageMedia, Contact, Location, GroupNotification,
 const LegacySessionAuth = require('./authStrategies/LegacySessionAuth');
 const NoAuth = require('./authStrategies/NoAuth');
 const CatalogFactory = require('./factories/CatalogFactory');
-const PersonalCatalog = require('./structures/PersonalCatalog');
-const ExternalCatalog = require('./structures/ExternalCatalog');
 
 /**
  * Starting point for interacting with the WhatsApp Web API

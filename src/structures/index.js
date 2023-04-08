@@ -22,4 +22,6 @@ module.exports = {
     Catalog: require('./Catalog'),
     CatalogItem: require('./CatalogItem'),
     Collection: require('./Collection'),
+    PersonalCatalog: require('./PersonalCatalog'),
+    ExternalCatalog: require('./ExternalCatalog'),
 };
