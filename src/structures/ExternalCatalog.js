@@ -18,7 +18,7 @@ class ExternalCatalog extends Catalog {
     async getProducts() {
         const res = await this.client.pupPage.evaluate(async (userid) => {
             return await window.WWebJS.getCatalogProducts(userid);
-        }, this.userid);
+        }, this.userId);
         
         return res.map(el => new CatalogItem(this.client, el));
     }
